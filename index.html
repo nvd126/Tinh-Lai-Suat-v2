@@ -156,39 +156,39 @@
         </div>
       </section>
     </div>
-    <section class="panel strategy-panel" aria-labelledby="strategy-title">
-      <h2 id="strategy-title">Phương án tham khảo với 6 tỷ đồng</h2>
-      <p class="strategy-lead">Minh họa theo ngày gửi 06/10/2026, lãi suất 8,8%/năm và bảng quà tặng hiện tại. Các con số dưới đây giúp so sánh cách nhận lãi và quà, không thay thế điều kiện thực tế của ngân hàng.</p>
+    <section id="strategy-panel" class="panel strategy-panel" aria-labelledby="strategy-title" hidden>
+      <h2 id="strategy-title">Phương án tham khảo theo số tiền đang nhập</h2>
+      <p id="strategy-lead" class="strategy-lead"></p>
       <div class="strategy-grid">
-        <article class="strategy-card">
+        <article id="strategy-one-card" class="strategy-card">
           <h3>1. Cách thông thường</h3>
-          <p class="strategy-sub">Một sổ · 6 tỷ · 13 tháng</p>
-          <div class="strategy-metric"><span>Tiền lãi</span><strong>632.757.145 đ</strong></div>
-          <div class="strategy-metric"><span>Quà tặng</span><strong>5.000.000 đ</strong></div>
-          <div class="strategy-metric total"><span>Lãi + quà</span><strong>637.757.145 đ</strong></div>
-          <div class="strategy-metric total"><span>Cuối kỳ</span><strong>6.637.757.145 đ</strong></div>
-          <p>Đơn giản, chỉ quản lý một sổ và nhận tiền vào một thời điểm.</p>
+          <p id="strategy-one-sub" class="strategy-sub"></p>
+          <div class="strategy-metric"><span>Tiền lãi</span><strong id="strategy-one-interest"></strong></div>
+          <div class="strategy-metric"><span>Quà tặng</span><strong id="strategy-one-gift"></strong></div>
+          <div class="strategy-metric total"><span>Lãi + quà</span><strong id="strategy-one-benefit"></strong></div>
+          <div class="strategy-metric total"><span>Cuối kỳ</span><strong id="strategy-one-final"></strong></div>
+          <p id="strategy-one-note"></p>
         </article>
-        <article class="strategy-card recommended">
-          <h3>2. Tối đa lãi và quà</h3>
-          <p class="strategy-sub">3 sổ × 2 tỷ · cùng 13 tháng</p>
-          <div class="strategy-metric"><span>Tiền lãi</span><strong>632.757.144 đ</strong></div>
-          <div class="strategy-metric"><span>Quà tặng</span><strong>6.000.000 đ</strong></div>
-          <div class="strategy-metric total"><span>Lãi + quà</span><strong>638.757.144 đ</strong></div>
-          <div class="strategy-metric total"><span>Cuối kỳ</span><strong>6.638.757.144 đ</strong></div>
-          <p>Cao hơn phương án 1 khoảng 1 triệu đồng nếu quà được tính riêng cho từng sổ.</p>
+        <article id="strategy-two-card" class="strategy-card">
+          <h3>2. Tối đa lợi nhuận</h3>
+          <p id="strategy-two-sub" class="strategy-sub"></p>
+          <div class="strategy-metric"><span>Tiền lãi</span><strong id="strategy-two-interest"></strong></div>
+          <div class="strategy-metric"><span>Quà tặng</span><strong id="strategy-two-gift"></strong></div>
+          <div class="strategy-metric total"><span>Lãi + quà</span><strong id="strategy-two-benefit"></strong></div>
+          <div class="strategy-metric total"><span>Cuối kỳ</span><strong id="strategy-two-final"></strong></div>
+          <p id="strategy-two-note"></p>
         </article>
-        <article class="strategy-card">
+        <article id="strategy-three-card" class="strategy-card">
           <h3>3. Ưu tiên xoay vốn</h3>
-          <p class="strategy-sub">2 tỷ × 11 tháng · 12 tháng · 13 tháng</p>
-          <div class="strategy-metric"><span>Tiền lãi</span><strong>579.404.636 đ</strong></div>
-          <div class="strategy-metric"><span>Quà tặng</span><strong>8.000.000 đ</strong></div>
-          <div class="strategy-metric total"><span>Lãi + quà</span><strong>587.404.636 đ</strong></div>
-          <div class="strategy-metric total"><span>Cuối kỳ</span><strong>6.587.404.636 đ</strong></div>
-          <p>Tiền đáo hạn lần lượt vào 06/09, 06/10 và 06/11/2027, nhưng tổng lợi ích thấp hơn.</p>
+          <p id="strategy-three-sub" class="strategy-sub"></p>
+          <div class="strategy-metric"><span>Tiền lãi</span><strong id="strategy-three-interest"></strong></div>
+          <div class="strategy-metric"><span>Quà tặng</span><strong id="strategy-three-gift"></strong></div>
+          <div class="strategy-metric total"><span>Lãi + quà</span><strong id="strategy-three-benefit"></strong></div>
+          <div class="strategy-metric total"><span>Cuối kỳ</span><strong id="strategy-three-final"></strong></div>
+          <p id="strategy-three-note"></p>
         </article>
       </div>
-      <p class="strategy-note"><strong>Cách chọn:</strong> Chọn phương án 2 nếu mục tiêu là tối đa hóa tổng tiền. Chọn phương án 3 nếu cần tiền về từng đợt để chủ động xoay vốn. Phương án 2 chỉ đạt mức quà cao hơn khi chương trình áp dụng theo từng sổ tiết kiệm.</p>
+      <p id="strategy-note" class="strategy-note"></p>
     </section>
     <p class="note"><strong>Điều kiện tính tiếp:</strong> Chỉ mở sổ tiếp theo khi tiền lãi sổ liền trước đạt từ 10.000.000 đồng. Lãi mỗi sổ = số tiền gửi × 8,8% × số ngày / 365. Quà tặng áp dụng theo chương trình từ 01/10/2026 đến hết 31/10/2026, có thể kết thúc sớm.</p>
   </main>
@@ -248,6 +248,154 @@
       function maturityDate(start, months) {
         return addMonths(start, months);
       }
+      const strategyTerms = [6, 11, 12, 13];
+      const strategyUnit = 100000000;
+      const strategyMaxUnits = 300;
+      function calculateDeposit(principal, months, startDate) {
+        const end = maturityDate(startDate, months);
+        const days = Math.round((utcDay(end) - utcDay(startDate)) / 86400000);
+        const rateForTerm = 0.088 * days / 365;
+        const interests = [];
+        let current = principal;
+        let totalInterest = 0;
+        for (let index = 0; index < 4; index += 1) {
+          const interest = Math.round(current * rateForTerm);
+          interests.push(interest);
+          totalInterest += interest;
+          if (interest < 10000000) break;
+          current = interest;
+        }
+        const gift = cashGift(principal, months, startDate);
+        return {
+          amount: principal,
+          months,
+          start: startDate,
+          end,
+          days,
+          interests,
+          interest: totalInterest,
+          gift,
+          benefit: totalInterest + gift,
+          final: principal + totalInterest + gift,
+        };
+      }
+      function evaluateStrategyParts(parts, startDate) {
+        const details = parts.filter(part => part.amount > 0).map(part => calculateDeposit(part.amount, part.months, startDate));
+        return {
+          parts: details,
+          amount: details.reduce((sum, part) => sum + part.amount, 0),
+          interest: details.reduce((sum, part) => sum + part.interest, 0),
+          gift: details.reduce((sum, part) => sum + part.gift, 0),
+          benefit: details.reduce((sum, part) => sum + part.benefit, 0),
+        };
+      }
+      function isBetterStrategy(candidate, current) {
+        if (!current) return true;
+        if (candidate.benefit !== current.benefit) return candidate.benefit > current.benefit;
+        if (candidate.parts.length !== current.parts.length) return candidate.parts.length < current.parts.length;
+        return candidate.parts.reduce((sum, part) => sum + part.months, 0) > current.parts.reduce((sum, part) => sum + part.months, 0);
+      }
+      function addStrategyCandidate(candidates, parts, amount, startDate) {
+        const plan = evaluateStrategyParts(parts, startDate);
+        if (plan.amount === amount) candidates.push(plan);
+      }
+      function splitIntoEqualParts(amount, count, months) {
+        const base = Math.floor(amount / count);
+        const parts = Array.from({ length: count }, () => ({ amount: base, months }));
+        parts[parts.length - 1].amount += amount - base * count;
+        return parts;
+      }
+      function buildMaximizeStrategy(amount, startDate) {
+        const candidates = [];
+        for (const months of strategyTerms) {
+          addStrategyCandidate(candidates, [{ amount, months }], amount, startDate);
+          const twoBillionParts = [];
+          let remaining = amount;
+          while (remaining > 2000000000) {
+            twoBillionParts.push({ amount: 2000000000, months });
+            remaining -= 2000000000;
+          }
+          if (remaining > 0) twoBillionParts.push({ amount: remaining, months });
+          addStrategyCandidate(candidates, twoBillionParts, amount, startDate);
+          const fiveHundredMillionParts = [];
+          remaining = amount;
+          while (remaining > 500000000) {
+            fiveHundredMillionParts.push({ amount: 500000000, months });
+            remaining -= 500000000;
+          }
+          if (remaining > 0) fiveHundredMillionParts.push({ amount: remaining, months });
+          addStrategyCandidate(candidates, fiveHundredMillionParts, amount, startDate);
+          for (let count = 2; count <= 12 && count <= Math.floor(amount / 100000000); count += 1) {
+            addStrategyCandidate(candidates, splitIntoEqualParts(amount, count, months), amount, startDate);
+          }
+        }
+        const wholeUnits = Math.floor(amount / strategyUnit);
+        const remainder = amount - wholeUnits * strategyUnit;
+        if (wholeUnits > 0 && wholeUnits <= strategyMaxUnits) {
+          const best = Array(wholeUnits + 1).fill(null);
+          best[0] = { value: 0, parts: [] };
+          for (let used = 1; used <= wholeUnits; used += 1) {
+            for (let piece = 1; piece <= used; piece += 1) {
+              for (const months of strategyTerms) {
+                const previous = best[used - piece];
+                if (!previous) continue;
+                const part = calculateDeposit(piece * strategyUnit, months, startDate);
+                const candidate = { value: previous.value + part.benefit, parts: [...previous.parts, { amount: piece * strategyUnit, months }] };
+                if (!best[used] || candidate.value > best[used].value || (candidate.value === best[used].value && candidate.parts.length < best[used].parts.length)) best[used] = candidate;
+              }
+            }
+          }
+          if (best[wholeUnits]) {
+            if (remainder > 0) {
+              for (const months of strategyTerms) addStrategyCandidate(candidates, [...best[wholeUnits].parts, { amount: remainder, months }], amount, startDate);
+            } else {
+              addStrategyCandidate(candidates, best[wholeUnits].parts, amount, startDate);
+            }
+          }
+        }
+        return candidates.reduce((best, candidate) => isBetterStrategy(candidate, best) ? candidate : best, null);
+      }
+      function buildLiquidityStrategy(amount, startDate) {
+        const first = Math.floor(amount / 3);
+        return evaluateStrategyParts([
+          { amount: first, months: 11 },
+          { amount: first, months: 12 },
+          { amount: amount - first * 2, months: 13 },
+        ], startDate);
+      }
+      function strategyPlanLabel(plan) {
+        if (plan.parts.length === 1) return `1 sổ · ${plan.parts[0].months} tháng`;
+        const sameTerm = plan.parts.every(part => part.months === plan.parts[0].months);
+        const sameAmount = plan.parts.every(part => part.amount === plan.parts[0].amount);
+        if (sameTerm && sameAmount) return `${plan.parts.length} sổ × ${money(plan.parts[0].amount)} · ${plan.parts[0].months} tháng`;
+        return plan.parts.map(part => `${money(part.amount)} · ${part.months} tháng`).join(' + ');
+      }
+      function strategyMaturityLabel(plan) {
+        return plan.parts.map(part => formatDate(part.end)).filter((date, index, dates) => dates.indexOf(date) === index).join(', ');
+      }
+      function renderStrategyCard(prefix, plan, note) {
+        byId(`${prefix}-sub`).textContent = strategyPlanLabel(plan);
+        byId(`${prefix}-interest`).textContent = money(plan.interest);
+        byId(`${prefix}-gift`).textContent = money(plan.gift);
+        byId(`${prefix}-benefit`).textContent = money(plan.benefit);
+        byId(`${prefix}-final`).textContent = money(plan.amount + plan.benefit);
+        byId(`${prefix}-note`).textContent = note;
+      }
+      function renderStrategies(amount, startDate) {
+        const one = strategyTerms.map(months => evaluateStrategyParts([{ amount, months }], startDate)).reduce((best, candidate) => isBetterStrategy(candidate, best) ? candidate : best, null);
+        const two = buildMaximizeStrategy(amount, startDate);
+        const three = buildLiquidityStrategy(amount, startDate);
+        byId('strategy-panel').hidden = false;
+        byId('strategy-lead').textContent = `Tự động cập nhật cho ${money(amount)} · lãi suất 8,8%/năm · ngày gửi ${formatDate(startDate)}.`;
+        renderStrategyCard('strategy-one', one, `Đơn giản nhất; ngày đáo hạn dự kiến ${strategyMaturityLabel(one)}.`);
+        renderStrategyCard('strategy-two', two, two.benefit > one.benefit ? `Cao hơn phương án 1 khoảng ${money(two.benefit - one.benefit)} nếu quà được tính riêng theo từng sổ.` : 'Không tạo thêm lợi ích đáng kể; phù hợp khi muốn ít sổ hơn.');
+        renderStrategyCard('strategy-three', three, `Tiền đáo hạn theo các ngày ${strategyMaturityLabel(three)} để chủ động xoay vốn.`);
+        const oneCard = byId('strategy-one-card');
+        const twoCard = byId('strategy-two-card');
+        oneCard.classList.toggle('recommended', two.benefit <= one.benefit);
+        twoCard.classList.toggle('recommended', two.benefit > one.benefit);
+        byId('strategy-note').innerHTML = `<strong>Cách chọn:</strong> ${two.benefit > one.benefit ? 'Ưu tiên phương án 2 nếu mục tiêu là tối đa hóa tổng tiền.' : 'Phương án 1 đang đủ tốt vì chia sổ chưa tạo thêm lợi ích.'} Chọn phương án 3 nếu cần tiền về từng đợt. Kết quả giả định chương trình tính quà riêng cho từng sổ tiết kiệm.`;
+      }
       function calculate() {
         const amount = parseAmount(amountInput.value);
         const months = Number(termInput.value);
@@ -262,6 +410,7 @@
           error.textContent = amountInput.value.trim() ? 'Vui lòng nhập số tiền hợp lệ.' : 'Vui lòng nhập số tiền gửi.';
           amountInput.setAttribute('aria-invalid', 'true');
           byId('result-body').hidden = true;
+          byId('strategy-panel').hidden = true;
           byId('total').textContent = '—';
           return;
         }
@@ -311,6 +460,7 @@
         byId('cash-gift').textContent = money(gift);
         byId('with-gift').textContent = money(totalWithGift);
         byId('effective-with-gift').textContent = `${effectiveWithGift.toLocaleString('vi-VN', { minimumFractionDigits: 4, maximumFractionDigits: 4 })}%`;
+        renderStrategies(amount, start);
       }
       function drawStatement() {
         const canvas = document.createElement('canvas');
