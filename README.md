@@ -14,4 +14,4 @@ Quà tặng theo bảng: kỳ hạn 6 và 11 tháng nhận lần lượt 1 tri�
 
 Nút **Chụp bảng tính** tạo ảnh PNG của toàn bộ kết quả. Nút **Chia sẻ ảnh** mở bảng chia sẻ của thiết bị; nếu trình duyệt không hỗ trợ chia sẻ tệp nhưng cho phép sao chép ảnh, ảnh sẽ được sao chép để dán vào ứng dụng nhắn tin.
 
-Trang cũng có phần **Phương án tham khảo theo số tiền đang nhập**. Phần này tự cập nhật để so sánh phương án gửi một sổ, phương án chia sổ tối đa lãi và quà, và phương án chia tiền theo các kỳ hạn 11, 12, 13 tháng để nhận tiền đáo hạn từng đợt.
+Trang cũng có phần **Phương án tham khảo theo số tiền đang nhập**. Phần này tự cập nhật để so sánh gửi một sổ với phương pháp chia sổ cho từng kỳ hạn 6, 11, 12 và 13 tháng. Mỗi kỳ hạn hiển thị số tiền chia, tiền lãi, quà tặng, tổng lợi ích và tỷ lệ tổng lợi ích trên vốn.
