@@ -14,4 +14,4 @@ Quà tặng theo bảng: kỳ hạn 6 và 11 tháng nhận lần lượt 1 tri�
 
 Nút **Chụp bảng tính** tạo ảnh PNG của toàn bộ kết quả. Nút **Chia sẻ ảnh** mở bảng chia sẻ của thiết bị; nếu trình duyệt không hỗ trợ chia sẻ tệp nhưng cho phép sao chép ảnh, ảnh sẽ được sao chép để dán vào ứng dụng nhắn tin.
 
-Trang cũng có phần **Phương án theo yêu cầu khách hàng**. Phần này lấy đúng số tiền và kỳ hạn khách chọn làm phương án chính, tự chia sổ tối ưu trong kỳ hạn đó, rồi chỉ hiển thị các kỳ hạn dài hơn để đề xuất thêm. Mỗi phương án hiển thị số tiền chia, tiền lãi, quà tặng, tổng lợi ích và tỷ lệ tổng lợi ích trên vốn.
+Trang cũng có phần **Phương án theo yêu cầu khách hàng**. Phần này lấy đúng số tiền và kỳ hạn khách chọn làm phương án chính, tự chia sổ tối ưu trong kỳ hạn đó, rồi chỉ hiển thị các kỳ hạn dài hơn để đề xuất thêm. Mỗi phương án hiển thị số tiền chia, tiền lãi, quà tặng, tổng lợi ích, số tiền cuối kỳ và **Lãi suất thực nhận + Quà quy đổi** theo năm để so sánh các kỳ hạn.

@@ -153,7 +153,7 @@
           <div class="row emphasis"><span>Lãi suất thực nhận</span><strong id="effective">—</strong></div>
           <div class="row gift"><span>Quà tặng dự kiến</span><strong id="cash-gift">—</strong></div>
           <div class="row emphasis"><span>Tổng tiền lãi + quà</span><strong id="with-gift">—</strong></div>
-          <div class="row final"><span>Lãi suất thực nhận + quà</span><strong id="effective-with-gift">—</strong></div>
+          <div class="row final"><span>Lãi suất thực nhận + Quà quy đổi</span><strong id="effective-with-gift">—</strong></div>
         </div>
         <div class="capture-panel">
           <button id="capture-button" class="capture-button" type="button" aria-describedby="capture-status">Chụp bảng tính</button>
@@ -175,7 +175,7 @@
           <div class="strategy-metric"><span>Tiền lãi</span><strong id="strategy-one-interest"></strong></div>
           <div class="strategy-metric"><span>Quà tặng</span><strong id="strategy-one-gift"></strong></div>
           <div class="strategy-metric total"><span>Lãi + quà</span><strong id="strategy-one-benefit"></strong></div>
-          <div class="strategy-metric total"><span>Tỷ lệ trên vốn</span><strong id="strategy-one-percent"></strong></div>
+          <div class="strategy-metric total"><span>Lãi suất thực nhận + Quà quy đổi</span><strong id="strategy-one-percent"></strong></div>
           <div class="strategy-metric total"><span>Cuối kỳ</span><strong id="strategy-one-final"></strong></div>
           <p id="strategy-one-note"></p>
         </article>
@@ -356,15 +356,16 @@
       function strategyMaturityLabel(plan) {
         return plan.parts.map(part => formatDate(part.end)).filter((date, index, dates) => dates.indexOf(date) === index).join(', ');
       }
-      function strategyPercent(plan) {
-        return `${(plan.benefit / plan.amount * 100).toLocaleString('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`;
+      function strategyAnnualizedPercent(plan) {
+        const weightedDays = plan.parts.reduce((sum, part) => sum + part.days * part.amount, 0) / plan.amount;
+        return `${(plan.benefit / plan.amount * 365 / weightedDays * 100).toLocaleString('vi-VN', { minimumFractionDigits: 4, maximumFractionDigits: 4 })}%`;
       }
       function renderStrategyCard(prefix, plan, note) {
         byId(`${prefix}-sub`).textContent = strategyPlanLabel(plan);
         byId(`${prefix}-interest`).textContent = money(plan.interest);
         byId(`${prefix}-gift`).textContent = money(plan.gift);
         byId(`${prefix}-benefit`).textContent = money(plan.benefit);
-        byId(`${prefix}-percent`).textContent = strategyPercent(plan);
+        byId(`${prefix}-percent`).textContent = strategyAnnualizedPercent(plan);
         byId(`${prefix}-final`).textContent = money(plan.amount + plan.benefit);
         byId(`${prefix}-note`).textContent = note;
       }
@@ -379,7 +380,7 @@
         byId('strategy-two-sub').textContent = longerPlans.length ? 'Chỉ hiển thị các kỳ hạn dài hơn để khách cân nhắc thêm.' : 'Khách đã chọn kỳ hạn dài nhất hiện có.';
         byId('strategy-term-options').innerHTML = longerPlans.length ? longerPlans.map(plan => {
           const termBest = plan === bestLonger;
-          return `<div class="strategy-term-option${termBest ? ' best' : ''}"><h4>${plan.parts[0].months} tháng${termBest ? ' · nên cân nhắc' : ''}</h4><p class="strategy-sub">${strategyPlanLabel(plan)}</p><div class="strategy-term-metric"><span>Tiền lãi</span><strong>${money(plan.interest)}</strong></div><div class="strategy-term-metric"><span>Quà tặng</span><strong>${money(plan.gift)}</strong></div><div class="strategy-term-metric total"><span>Lãi + quà</span><strong>${money(plan.benefit)}</strong></div><div class="strategy-term-metric total"><span>Tỷ lệ trên vốn</span><strong>${strategyPercent(plan)}</strong></div><p class="strategy-term-note">Cuối kỳ: ${money(plan.amount + plan.benefit)}.</p></div>`;
+          return `<div class="strategy-term-option${termBest ? ' best' : ''}"><h4>${plan.parts[0].months} tháng${termBest ? ' · nên cân nhắc' : ''}</h4><p class="strategy-sub">${strategyPlanLabel(plan)}</p><div class="strategy-term-metric"><span>Tiền lãi</span><strong>${money(plan.interest)}</strong></div><div class="strategy-term-metric"><span>Quà tặng</span><strong>${money(plan.gift)}</strong></div><div class="strategy-term-metric total"><span>Lãi + quà</span><strong>${money(plan.benefit)}</strong></div><div class="strategy-term-metric total"><span>Lãi suất thực nhận + Quà quy đổi</span><strong>${strategyAnnualizedPercent(plan)}</strong></div><p class="strategy-term-note">Cuối kỳ: ${money(plan.amount + plan.benefit)}.</p></div>`;
         }).join('') : '<p class="strategy-term-note">Không còn kỳ hạn dài hơn trong danh sách hiện tại.</p>';
         const splitDifference = requestedPlan.benefit - requestedSingle.benefit;
         byId('strategy-one-note').textContent = splitDifference > 0 ? `Chia sổ giúp tăng khoảng ${money(splitDifference)} so với gửi một sổ cùng kỳ hạn.` : 'Với số tiền này, chia sổ không tạo thêm lợi ích đáng kể so với gửi một sổ.';
@@ -388,7 +389,7 @@
         const twoCard = byId('strategy-two-card');
         oneCard.classList.toggle('recommended', !longerPlans.length);
         twoCard.classList.toggle('recommended', Boolean(longerPlans.length));
-        byId('strategy-note').innerHTML = `<strong>Cách chọn:</strong> Phương án 1 giữ đúng số tiền và kỳ hạn khách yêu cầu. Nếu khách chấp nhận gửi dài hơn, xem kỳ hạn được đánh dấu “nên cân nhắc”. Tỷ lệ % là tổng lãi và quà chia cho số vốn ban đầu. Kết quả giả định chương trình tính quà riêng cho từng sổ tiết kiệm.`;
+        byId('strategy-note').innerHTML = `<strong>Cách chọn:</strong> Phương án 1 giữ đúng số tiền và kỳ hạn khách yêu cầu. Nếu khách chấp nhận gửi dài hơn, xem kỳ hạn được đánh dấu “nên cân nhắc”. Lãi suất thực nhận + Quà quy đổi được quy đổi theo năm để so sánh các kỳ hạn. Kết quả giả định chương trình tính quà riêng cho từng sổ tiết kiệm.`;
       }
       function calculate() {
         const amount = parseAmount(amountInput.value);
@@ -533,7 +534,7 @@
         row('Lãi suất thực nhận', byId('effective').textContent, 'strong');
         row('Quà tặng dự kiến', byId('cash-gift').textContent, 'gift');
         row('Tổng tiền lãi + quà', byId('with-gift').textContent, 'strong');
-        row('Lãi suất thực nhận + quà', byId('effective-with-gift').textContent, 'strong');
+          row('Lãi suất thực nhận + Quà quy đổi', byId('effective-with-gift').textContent, 'strong');
         ctx.fillStyle = '#5e7383';
         ctx.font = '400 17px Averta, Georgia, serif';
         y += 34;
