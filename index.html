@@ -170,7 +170,7 @@
       <p id="strategy-lead" class="strategy-lead"></p>
       <div class="strategy-grid">
         <article id="strategy-one-card" class="strategy-card">
-          <h3>1. Một sổ để đối chiếu</h3>
+          <h3 id="strategy-one-title">1. Tối ưu đúng kỳ hạn khách chọn</h3>
           <p id="strategy-one-sub" class="strategy-sub"></p>
           <div class="strategy-metric"><span>Tiền lãi</span><strong id="strategy-one-interest"></strong></div>
           <div class="strategy-metric"><span>Quà tặng</span><strong id="strategy-one-gift"></strong></div>
@@ -180,7 +180,7 @@
           <p id="strategy-one-note"></p>
         </article>
         <article id="strategy-two-card" class="strategy-card">
-          <h3>2. Chia sổ theo từng kỳ hạn</h3>
+          <h3>2. Đề xuất kỳ hạn dài hơn</h3>
           <p id="strategy-two-sub" class="strategy-sub"></p>
           <div id="strategy-term-options" class="strategy-term-options"></div>
           <p id="strategy-two-note"></p>
@@ -346,9 +346,6 @@
         }
         return candidates.reduce((best, candidate) => isBetterStrategy(candidate, best) ? candidate : best, null);
       }
-      function buildMaximizeStrategy(amount, startDate) {
-        return strategyTerms.map(months => buildBestSplitForTerm(amount, months, startDate)).reduce((best, candidate) => isBetterStrategy(candidate, best) ? candidate : best, null);
-      }
       function strategyPlanLabel(plan) {
         if (plan.parts.length === 1) return `1 sổ · ${plan.parts[0].months} tháng`;
         const sameTerm = plan.parts.every(part => part.months === plan.parts[0].months);
@@ -371,25 +368,27 @@
         byId(`${prefix}-final`).textContent = money(plan.amount + plan.benefit);
         byId(`${prefix}-note`).textContent = note;
       }
-      function renderStrategies(amount, startDate) {
-        const one = strategyTerms.map(months => evaluateStrategyParts([{ amount, months }], startDate)).reduce((best, candidate) => isBetterStrategy(candidate, best) ? candidate : best, null);
-        const termPlans = strategyTerms.map(months => buildBestSplitForTerm(amount, months, startDate));
-        const two = termPlans.reduce((best, candidate) => isBetterStrategy(candidate, best) ? candidate : best, null);
+      function renderStrategies(amount, startDate, requestedMonths) {
+        const requestedPlan = buildBestSplitForTerm(amount, requestedMonths, startDate);
+        const requestedSingle = evaluateStrategyParts([{ amount, months: requestedMonths }], startDate);
+        const longerPlans = strategyTerms.filter(months => months > requestedMonths).map(months => buildBestSplitForTerm(amount, months, startDate));
+        const bestLonger = longerPlans.reduce((best, candidate) => isBetterStrategy(candidate, best) ? candidate : best, null);
         byId('strategy-panel').hidden = false;
-        byId('strategy-lead').textContent = `Tự động cập nhật cho ${money(amount)} · lãi suất 8,8%/năm · ngày gửi ${formatDate(startDate)}.`;
-        renderStrategyCard('strategy-one', one, `Đơn giản nhất; ngày đáo hạn dự kiến ${strategyMaturityLabel(one)}.`);
-        byId('strategy-two-sub').textContent = 'Mỗi kỳ hạn được tự tìm cách chia sổ tốt nhất theo số tiền đang nhập.';
-        const bestTermBenefit = Math.max(...termPlans.map(plan => plan.benefit));
-        byId('strategy-term-options').innerHTML = termPlans.map(plan => {
-          const termBest = plan.benefit === bestTermBenefit;
+        byId('strategy-lead').textContent = `Khách chọn ${money(amount)} · kỳ hạn ${requestedMonths} tháng · lãi suất 8,8%/năm · ngày gửi ${formatDate(startDate)}.`;
+        renderStrategyCard('strategy-one', requestedPlan, `Đúng kỳ hạn khách chọn; ngày đáo hạn dự kiến ${strategyMaturityLabel(requestedPlan)}.`);
+        byId('strategy-two-sub').textContent = longerPlans.length ? 'Chỉ hiển thị các kỳ hạn dài hơn để khách cân nhắc thêm.' : 'Khách đã chọn kỳ hạn dài nhất hiện có.';
+        byId('strategy-term-options').innerHTML = longerPlans.length ? longerPlans.map(plan => {
+          const termBest = plan === bestLonger;
           return `<div class="strategy-term-option${termBest ? ' best' : ''}"><h4>${plan.parts[0].months} tháng${termBest ? ' · nên cân nhắc' : ''}</h4><p class="strategy-sub">${strategyPlanLabel(plan)}</p><div class="strategy-term-metric"><span>Tiền lãi</span><strong>${money(plan.interest)}</strong></div><div class="strategy-term-metric"><span>Quà tặng</span><strong>${money(plan.gift)}</strong></div><div class="strategy-term-metric total"><span>Lãi + quà</span><strong>${money(plan.benefit)}</strong></div><div class="strategy-term-metric total"><span>Tỷ lệ trên vốn</span><strong>${strategyPercent(plan)}</strong></div><p class="strategy-term-note">Cuối kỳ: ${money(plan.amount + plan.benefit)}.</p></div>`;
-        }).join('');
-        byId('strategy-two-note').textContent = two.benefit > one.benefit ? `Phương án chia sổ tốt nhất hiện tại cao hơn phương án một sổ khoảng ${money(two.benefit - one.benefit)} nếu quà được tính riêng theo từng sổ.` : 'Với số tiền này, chia sổ không tạo thêm lợi ích đáng kể so với gửi một sổ.';
+        }).join('') : '<p class="strategy-term-note">Không còn kỳ hạn dài hơn trong danh sách hiện tại.</p>';
+        const splitDifference = requestedPlan.benefit - requestedSingle.benefit;
+        byId('strategy-one-note').textContent = splitDifference > 0 ? `Chia sổ giúp tăng khoảng ${money(splitDifference)} so với gửi một sổ cùng kỳ hạn.` : 'Với số tiền này, chia sổ không tạo thêm lợi ích đáng kể so với gửi một sổ.';
+        byId('strategy-two-note').textContent = longerPlans.length ? `Kỳ hạn dài hơn tốt nhất hiện tại là ${bestLonger.parts[0].months} tháng, cao hơn phương án khách chọn khoảng ${money(bestLonger.benefit - requestedPlan.benefit)}.` : 'Có thể giữ nguyên kỳ hạn khách chọn vì đây là kỳ hạn dài nhất hiện có.';
         const oneCard = byId('strategy-one-card');
         const twoCard = byId('strategy-two-card');
-        oneCard.classList.toggle('recommended', two.benefit <= one.benefit);
-        twoCard.classList.toggle('recommended', two.benefit > one.benefit);
-        byId('strategy-note').innerHTML = `<strong>Cách chọn:</strong> ${two.benefit > one.benefit ? 'Chọn kỳ hạn có thẻ “nên cân nhắc” nếu mục tiêu là tối đa hóa tổng tiền.' : 'Phương án một sổ đang đủ tốt vì chia sổ chưa tạo thêm lợi ích.'} Tỷ lệ % là tổng lãi và quà chia cho số vốn ban đầu. Kết quả giả định chương trình tính quà riêng cho từng sổ tiết kiệm.`;
+        oneCard.classList.toggle('recommended', !longerPlans.length);
+        twoCard.classList.toggle('recommended', Boolean(longerPlans.length));
+        byId('strategy-note').innerHTML = `<strong>Cách chọn:</strong> Phương án 1 giữ đúng số tiền và kỳ hạn khách yêu cầu. Nếu khách chấp nhận gửi dài hơn, xem kỳ hạn được đánh dấu “nên cân nhắc”. Tỷ lệ % là tổng lãi và quà chia cho số vốn ban đầu. Kết quả giả định chương trình tính quà riêng cho từng sổ tiết kiệm.`;
       }
       function calculate() {
         const amount = parseAmount(amountInput.value);
@@ -455,7 +454,7 @@
         byId('cash-gift').textContent = money(gift);
         byId('with-gift').textContent = money(totalWithGift);
         byId('effective-with-gift').textContent = `${effectiveWithGift.toLocaleString('vi-VN', { minimumFractionDigits: 4, maximumFractionDigits: 4 })}%`;
-        renderStrategies(amount, start);
+        renderStrategies(amount, start, months);
       }
       function drawStatement() {
         const canvas = document.createElement('canvas');
