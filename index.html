@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#112e46">
+  <meta name="description" content="Tính lãi tiền gửi theo ngày hiện tại tại Hà Nội.">
+  <title>Tính lãi tiền gửi</title>
+  <link rel="preload" href="fonts/Averta-Vietnamese-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23112e46'/%3E%3Cpath d='M14 42h36M18 33h28M23 24h18' stroke='%23f3ca71' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+  <style>
+    @font-face{font-family:"Averta";src:url("fonts/Averta-Vietnamese-Regular.woff2") format("woff2");font-style:normal;font-weight:400;font-display:swap}
+    @font-face{font-family:"Averta";src:url("fonts/Averta-Vietnamese-Semibold.woff2") format("woff2");font-style:normal;font-weight:600;font-display:swap}
+    @font-face{font-family:"Averta";src:url("fonts/Averta-Vietnamese-Bold.woff2") format("woff2");font-style:normal;font-weight:700;font-display:swap}
+    @font-face{font-family:"Averta";src:url("fonts/Averta-Vietnamese-Black.woff2") format("woff2");font-style:normal;font-weight:900;font-display:swap}
+    :root{font-family:"Averta",Georgia,serif;color:#173148;background:#f3f6f8;font-synthesis:none;line-height:1.45}
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh}
+    main{max-width:1060px;margin:auto;padding:34px 20px 64px}
+    .eyebrow{margin:0 0 7px;color:#587186;font-weight:700;font-size:.88rem;letter-spacing:.06em;text-transform:uppercase}
+    h1{font-size:clamp(1.8rem,4vw,2.65rem);line-height:1.14;letter-spacing:-.035em;margin:0 0 8px;color:#112e46}
+    .intro{margin:0 0 28px;color:#52697d;line-height:1.5}
+    .campaign-note{margin:-12px 0 24px;padding:15px 18px;border:1px solid #f1d28a;border-radius:12px;background:#fff8e5;color:#526275;font-size:.9rem;line-height:1.55}
+    .campaign-note strong{color:#173148}
+    .layout{display:grid;grid-template-columns:minmax(295px,.8fr) minmax(0,1.2fr);gap:18px;align-items:start}
+    .panel{background:#fff;border:1px solid #dce5eb;border-radius:20px;box-shadow:0 14px 40px rgba(19,50,71,.055)}
+    .form-panel{padding:25px}
+    .result-panel{overflow:hidden}
+    h2{font-size:1.08rem;margin:0 0 22px;color:#173148}
+    label{display:block;font-weight:700;font-size:.92rem;margin-bottom:9px}
+    .field{margin-bottom:22px}
+    .money-wrap{position:relative}
+    input,select{width:100%;height:54px;border:1.5px solid #b8c9d5;border-radius:11px;background:#fff;color:#122e44;font:700 1.1rem "Averta",Georgia,serif;outline:none}
+    input{padding:0 65px 0 15px;font-variant-numeric:tabular-nums}
+    select{padding:0 15px;cursor:pointer}
+    input:focus,select:focus{border-color:#207896;box-shadow:0 0 0 3px rgba(32,120,150,.15)}
+    .unit{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:#63788a;font-weight:700}
+    .hint{font-size:.83rem;color:#657a8c;margin:8px 0 0;line-height:1.45}
+    .error{color:#ad3535;min-height:1.3em;margin:8px 0 0;font-size:.86rem}
+    .fixed{border-top:1px solid #e2e9ee;padding-top:18px;margin-top:2px;display:grid;gap:10px}
+    .fixed-row{display:flex;justify-content:space-between;gap:8px;color:#52697d;font-size:.92rem}
+    .fixed-row strong{color:#173148}
+    .result-head{background:#112e46;color:#fff;padding:26px 28px 25px}
+    .result-head .label{color:#c9d9e3;font-size:.9rem;margin:0 0 9px}
+    .total{font-size:clamp(2rem,5vw,3.05rem);font-weight:800;letter-spacing:-.045em;font-variant-numeric:tabular-nums;line-height:1.1}
+    .total small{font-size:.45em;letter-spacing:0;font-weight:600;color:#d2e0e8}
+    .result-head .sub{margin:11px 0 0;color:#d2e0e8;font-size:.91rem}
+    .result-body{padding:20px 28px 26px}
+    .meta-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:22px}
+    .meta-item{padding:10px 12px;border-radius:9px;background:#f4f7f9;min-width:0}
+    .meta-item>span{display:block;color:#6b8191;font-size:.72rem;margin-bottom:3px}
+    .meta-item strong{display:block;color:#173148;font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .section-title{color:#698091;font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin:18px 0 9px}
+    .books{display:grid;gap:9px}
+    .book{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:16px;padding:13px 14px;border:1px solid #dfe8ed;border-radius:11px;background:#fff}
+    .book-name{display:block;color:#173148;font-size:.94rem;font-weight:800;margin-bottom:3px}
+    .book-meta{display:block;color:#6a7f8f;font-size:.76rem;line-height:1.4}
+    .book-interest{text-align:right;white-space:nowrap}
+    .book-interest span{display:block;color:#6a7f8f;font-size:.7rem;margin-bottom:2px}
+    .book-interest strong{display:block;color:#0e6d83;font-size:1.06rem;font-variant-numeric:tabular-nums}
+    .gate-note{margin:10px 0 0;padding:9px 12px;border-radius:8px;background:#f4f7f9;color:#5b7182;font-size:.78rem;line-height:1.45}
+    .row{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:13px 0;border-bottom:1px solid #e9eef2;font-size:.94rem}
+    .row span{color:#4b6377}
+    .row strong{font-size:1.04rem;white-space:nowrap;font-variant-numeric:tabular-nums}
+    .row.final{border-bottom:0;margin-top:2px}
+    .row.final strong{color:#0e6d83;font-size:1.18rem}
+    .row.emphasis{font-weight:800;color:#173148}
+    .row.emphasis span{color:#173148}
+    .row.gift{background:#fff9d6;margin:10px -13px 0;padding:13px;border:0;border-radius:8px}
+    .row.gift strong{color:#173148}
+    .capture-panel{border-top:1px solid #e2e9ee;padding:21px 28px 26px}
+    .capture-button,.share-button{display:inline-flex;align-items:center;justify-content:center;min-height:46px;border-radius:10px;padding:10px 16px;font:700 .94rem "Averta",Georgia,serif;text-decoration:none;cursor:pointer}
+    .capture-button{width:100%;border:0;background:#0e6d83;color:#fff}
+    .capture-button:hover,.share-button:hover{background:#09566a}
+    .capture-button:focus-visible,.share-button:focus-visible{outline:3px solid #f3ca71;outline-offset:3px}
+    .capture-button:disabled{opacity:.55;cursor:not-allowed}
+    .capture-ready{margin-top:18px}
+    .capture-preview{display:block;width:100%;max-height:360px;object-fit:contain;background:#f3f6f8;border:1px solid #dce5eb;border-radius:10px}
+    .share-button{width:100%;margin-top:12px;background:#0e6d83;color:#fff;border:1px solid #0e6d83}
+    .capture-status{min-height:1.4em;margin:10px 0 0;color:#587186;font-size:.86rem}
+    .note{margin:22px 0 0;color:#64798a;line-height:1.5;font-size:.84rem}
+    .note strong{color:#435e72}
+    .strategy-panel{margin-top:18px;padding:24px 28px 28px}
+    .strategy-lead{margin:-10px 0 18px;color:#64798a;font-size:.9rem;line-height:1.5}
+    .strategy-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    .strategy-card{padding:18px;border:1px solid #dce5eb;border-radius:13px;background:#fff}
+    .strategy-card.recommended{border-color:#0e6d83;box-shadow:0 0 0 2px rgba(14,109,131,.1)}
+    .strategy-card h3{margin:0;color:#173148;font-size:1rem;line-height:1.35}
+    .strategy-sub{margin:5px 0 15px;color:#698091;font-size:.82rem}
+    .strategy-metric{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid #e9eef2;color:#52697d;font-size:.84rem}
+    .strategy-metric strong{color:#173148;text-align:right;white-space:nowrap}
+    .strategy-metric.total strong{color:#0e6d83}
+    .strategy-card p:last-child{margin:15px 0 0;color:#5e7383;font-size:.82rem;line-height:1.5}
+    .strategy-note{margin:18px 0 0;padding:12px 14px;border-radius:9px;background:#f4f7f9;color:#5e7383;font-size:.82rem;line-height:1.5}
+    .strategy-note strong{color:#435e72}
+    [hidden]{display:none!important}
+    @media(max-width:900px){.strategy-grid{grid-template-columns:1fr}}
+    @media(max-width:760px){main{padding:24px 14px 44px}.layout{grid-template-columns:1fr}.intro{margin-bottom:20px}.form-panel{padding:20px}.result-head{padding:24px 22px}.result-body{padding:18px 22px 22px}.capture-panel{padding:20px 22px 22px}.strategy-panel{padding:20px 22px 22px}.panel{border-radius:17px}}
+    @media(max-width:460px){.meta-grid{grid-template-columns:1fr 1fr}.meta-item:first-child{grid-column:1/-1}.book{gap:10px;padding:12px}.book-meta{font-size:.72rem}.book-interest strong{font-size:.94rem}}
+    @media(max-width:350px){.row{font-size:.82rem}.row strong{font-size:.9rem}.result-body{padding-left:16px;padding-right:16px}.book{grid-template-columns:1fr}.book-interest{text-align:left}}
+  </style>
+</head>
+<body>
+  <main>
+    <p class="eyebrow">Bảng tính lãi tiền gửi</p>
+    <h1>Tính lãi tiền gửi</h1>
+    <p class="intro">Nhập số tiền và chọn kỳ hạn. Ngày gửi tự cập nhật theo giờ Hà Nội.</p>
+    <aside class="campaign-note" aria-label="Thời gian và sản phẩm áp dụng quà tặng"><strong>Thời gian áp dụng:</strong> Từ 01/10/2026 đến hết 31/10/2026. Chương trình có thể kết thúc sớm.<br><strong>Sản phẩm áp dụng:</strong> Tiền gửi tiết kiệm, tiền gửi có kỳ hạn tại quầy.</aside>
+    <div class="layout">
+      <section class="panel form-panel" aria-labelledby="input-title">
+        <h2 id="input-title">Thông tin khoản gửi</h2>
+        <div class="field">
+          <label for="amount">Số tiền gửi</label>
+          <div class="money-wrap"><input id="amount" type="text" inputmode="numeric" autocomplete="off" value="2.000.000.000" aria-describedby="amount-hint amount-error"><span class="unit">VNĐ</span></div>
+          <p id="amount-hint" class="hint">Ví dụ: 2.000.000.000.</p>
+          <p id="amount-error" class="error" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="term">Kỳ hạn gửi</label>
+          <select id="term"><option value="6">6 tháng</option><option value="11">11 tháng</option><option value="12" selected>12 tháng</option><option value="13">13 tháng</option></select>
+        </div>
+        <div class="fixed">
+          <div class="fixed-row"><span>Lãi suất áp dụng</span><strong>8,80%/năm</strong></div>
+          <div class="fixed-row"><span>Ngày gửi · Hà Nội (UTC+7)</span><strong id="input-start-date">—</strong></div>
+        </div>
+      </section>
+      <section class="panel result-panel" aria-labelledby="result-title">
+        <div class="result-head"><p id="result-title" class="label">Tổng lãi thực nhận</p><div class="total"><span id="total">—</span> <small>VNĐ</small></div><p class="sub">Tổng tiền lãi của các sổ đủ điều kiện</p></div>
+        <div class="result-body" id="result-body">
+          <div class="meta-grid" aria-label="Thông tin kỳ gửi">
+            <div class="meta-item"><span>Kỳ hạn</span><strong id="term-display">—</strong></div>
+            <div class="meta-item"><span>Ngày gửi → tất toán</span><strong id="date-range">—</strong></div>
+            <div class="meta-item"><span>Số ngày · lãi suất</span><strong><span id="days">—</span> · 8,80%</strong></div>
+          </div>
+          <p class="section-title">Dòng tiền lãi</p>
+          <div class="books">
+            <div class="book" id="book-one"><div><span class="book-name">Sổ 1 · Đầu kỳ</span><span class="book-meta">Tiền gửi: <b id="principal">—</b></span></div><div class="book-interest"><span>Tiền lãi</span><strong id="interest-one">—</strong></div></div>
+            <div class="book" id="book-two"><div><span class="book-name">Sổ 2 · Đầu kỳ</span><span class="book-meta">Mở từ lãi Sổ 1: <b id="book-two-principal">—</b></span></div><div class="book-interest"><span>Tiền lãi</span><strong id="interest-two">—</strong></div></div>
+            <div class="book" id="book-three"><div><span class="book-name">Sổ 3 · Cuối kỳ</span><span class="book-meta">Mở từ lãi Sổ 2: <b id="book-three-principal">—</b></span></div><div class="book-interest"><span>Tiền lãi</span><strong id="interest-three">—</strong></div></div>
+                      <div class="book" id="book-four" hidden><div><span class="book-name">Sổ 4 · Cuối kỳ</span><span class="book-meta">Mở từ lãi Sổ 3: <b id="book-four-principal">—</b></span></div><div class="book-interest"><span>Tiền lãi</span><strong id="interest-four">—</strong></div></div>
+          </div>
+          <p id="gate-note" class="gate-note"></p>
+          <p class="section-title">Kết quả chính</p>
+          <div class="row emphasis"><span>Lãi suất thực nhận</span><strong id="effective">—</strong></div>
+          <div class="row gift"><span>Quà tặng dự kiến</span><strong id="cash-gift">—</strong></div>
+          <div class="row emphasis"><span>Tổng tiền lãi + quà</span><strong id="with-gift">—</strong></div>
+          <div class="row final"><span>Lãi suất thực nhận + quà</span><strong id="effective-with-gift">—</strong></div>
+        </div>
+        <div class="capture-panel">
+          <button id="capture-button" class="capture-button" type="button" aria-describedby="capture-status">Chụp bảng tính</button>
+          <p id="capture-status" class="capture-status" aria-live="polite"></p>
+          <button id="share-button" class="share-button" type="button" hidden>Chia sẻ ảnh</button>
+          <div id="capture-ready" class="capture-ready" hidden>
+            <img id="capture-preview" class="capture-preview" alt="Ảnh toàn bộ bảng tính lãi vừa tạo">
+          </div>
+        </div>
+      </section>
+    </div>
+    <section class="panel strategy-panel" aria-labelledby="strategy-title">
+      <h2 id="strategy-title">Phương án tham khảo với 6 tỷ đồng</h2>
+      <p class="strategy-lead">Minh họa theo ngày gửi 06/10/2026, lãi suất 8,8%/năm và bảng quà tặng hiện tại. Các con số dưới đây giúp so sánh cách nhận lãi và quà, không thay thế điều kiện thực tế của ngân hàng.</p>
+      <div class="strategy-grid">
+        <article class="strategy-card">
+          <h3>1. Cách thông thường</h3>
+          <p class="strategy-sub">Một sổ · 6 tỷ · 13 tháng</p>
+          <div class="strategy-metric"><span>Tiền lãi</span><strong>632.757.145 đ</strong></div>
+          <div class="strategy-metric"><span>Quà tặng</span><strong>5.000.000 đ</strong></div>
+          <div class="strategy-metric total"><span>Lãi + quà</span><strong>637.757.145 đ</strong></div>
+          <div class="strategy-metric total"><span>Cuối kỳ</span><strong>6.637.757.145 đ</strong></div>
+          <p>Đơn giản, chỉ quản lý một sổ và nhận tiền vào một thời điểm.</p>
+        </article>
+        <article class="strategy-card recommended">
+          <h3>2. Tối đa lãi và quà</h3>
+          <p class="strategy-sub">3 sổ × 2 tỷ · cùng 13 tháng</p>
+          <div class="strategy-metric"><span>Tiền lãi</span><strong>632.757.144 đ</strong></div>
+          <div class="strategy-metric"><span>Quà tặng</span><strong>6.000.000 đ</strong></div>
+          <div class="strategy-metric total"><span>Lãi + quà</span><strong>638.757.144 đ</strong></div>
+          <div class="strategy-metric total"><span>Cuối kỳ</span><strong>6.638.757.144 đ</strong></div>
+          <p>Cao hơn phương án 1 khoảng 1 triệu đồng nếu quà được tính riêng cho từng sổ.</p>
+        </article>
+        <article class="strategy-card">
+          <h3>3. Ưu tiên xoay vốn</h3>
+          <p class="strategy-sub">2 tỷ × 11 tháng · 12 tháng · 13 tháng</p>
+          <div class="strategy-metric"><span>Tiền lãi</span><strong>579.404.636 đ</strong></div>
+          <div class="strategy-metric"><span>Quà tặng</span><strong>8.000.000 đ</strong></div>
+          <div class="strategy-metric total"><span>Lãi + quà</span><strong>587.404.636 đ</strong></div>
+          <div class="strategy-metric total"><span>Cuối kỳ</span><strong>6.587.404.636 đ</strong></div>
+          <p>Tiền đáo hạn lần lượt vào 06/09, 06/10 và 06/11/2027, nhưng tổng lợi ích thấp hơn.</p>
+        </article>
+      </div>
+      <p class="strategy-note"><strong>Cách chọn:</strong> Chọn phương án 2 nếu mục tiêu là tối đa hóa tổng tiền. Chọn phương án 3 nếu cần tiền về từng đợt để chủ động xoay vốn. Phương án 2 chỉ đạt mức quà cao hơn khi chương trình áp dụng theo từng sổ tiết kiệm.</p>
+    </section>
+    <p class="note"><strong>Điều kiện tính tiếp:</strong> Chỉ mở sổ tiếp theo khi tiền lãi sổ liền trước đạt từ 10.000.000 đồng. Lãi mỗi sổ = số tiền gửi × 8,8% × số ngày / 365. Quà tặng áp dụng theo chương trình từ 01/10/2026 đến hết 31/10/2026, có thể kết thúc sớm.</p>
+  </main>
+  <script>
+    (() => {
+      'use strict';
+      const byId = id => document.getElementById(id);
+      const amountInput = byId('amount');
+      const termInput = byId('term');
+      const number = value => new Intl.NumberFormat('vi-VN').format(value);
+      const money = value => `${number(value)} đ`;
+      const parseAmount = value => Number(value.replace(/\D/g, ''));
+      function cashGift(amount, months, startDate) {
+        const dateKey = startDate.year * 10000 + startDate.month * 100 + startDate.day;
+        if (dateKey < 20261001 || dateKey > 20261031) return 0;
+        const tiers = months >= 12
+          ? [[500000000, 2000000000, 500000], [2000000000, 5000000000, 2000000], [5000000000, 10000000000, 5000000], [10000000000, 20000000000, 20000000], [20000000000, 50000000000, 40000000], [50000000000, Infinity, 100000000]]
+          : months >= 6
+            ? [[500000000, 2000000000, 1000000], [2000000000, 5000000000, 4000000], [5000000000, 10000000000, 10000000], [10000000000, 20000000000, 30000000], [20000000000, 50000000000, 60000000], [50000000000, Infinity, 150000000]]
+            : [];
+        const tier = tiers.find(([minimum, maximum]) => amount >= minimum && amount < maximum);
+        return tier ? tier[2] : 0;
+      }
+      const captureButton = byId('capture-button');
+      const captureReady = byId('capture-ready');
+      const captureStatus = byId('capture-status');
+      const shareButton = byId('share-button');
+      let captureUrl = null;
+      let captureBlob = null;
+      let captureFile = null;
+      let captureSignature = null;
+      function clearCapture() {
+        if (captureUrl) URL.revokeObjectURL(captureUrl);
+        captureUrl = null;
+        captureBlob = null;
+        captureFile = null;
+        captureSignature = null;
+        captureReady.hidden = true;
+        shareButton.hidden = true;
+        byId('capture-preview').removeAttribute('src');
+        captureStatus.textContent = '';
+      }
+      function hanoiToday() {
+        const parts = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Ho_Chi_Minh', year: 'numeric', month: 'numeric', day: 'numeric' }).formatToParts(new Date());
+        const value = type => Number(parts.find(part => part.type === type).value);
+        return { year: value('year'), month: value('month'), day: value('day') };
+      }
+      function addMonths(date, months) {
+        const target = new Date(Date.UTC(date.year, date.month - 1 + months, 1));
+        const year = target.getUTCFullYear();
+        const month = target.getUTCMonth() + 1;
+        const lastDay = new Date(Date.UTC(year, month, 0)).getUTCDate();
+        return { year, month, day: Math.min(date.day, lastDay) };
+      }
+      const formatDate = date => `${date.day}/${date.month}/${date.year}`;
+      const utcDay = date => Date.UTC(date.year, date.month - 1, date.day);
+      function maturityDate(start, months) {
+        return addMonths(start, months);
+      }
+      function calculate() {
+        const amount = parseAmount(amountInput.value);
+        const months = Number(termInput.value);
+        const start = hanoiToday();
+        const end = maturityDate(start, months);
+        const days = Math.round((utcDay(end) - utcDay(start)) / 86400000);
+        byId('input-start-date').textContent = formatDate(start);
+        const error = byId('amount-error');
+        if (!Number.isSafeInteger(amount) || amount <= 0) {
+          clearCapture();
+          captureButton.disabled = true;
+          error.textContent = amountInput.value.trim() ? 'Vui lòng nhập số tiền hợp lệ.' : 'Vui lòng nhập số tiền gửi.';
+          amountInput.setAttribute('aria-invalid', 'true');
+          byId('result-body').hidden = true;
+          byId('total').textContent = '—';
+          return;
+        }
+        error.textContent = '';
+        amountInput.removeAttribute('aria-invalid');
+        captureButton.disabled = false;
+        if (captureSignature && captureSignature !== `${amount}|${months}|${formatDate(start)}`) clearCapture();
+        byId('result-body').hidden = false;
+        const rateForTerm = 0.088 * days / 365;
+        const minimumInterest = 10000000;
+        const first = Math.round(amount * rateForTerm);
+        const hasSecond = first >= minimumInterest;
+        const second = hasSecond ? Math.round(first * rateForTerm) : 0;
+        const hasThird = hasSecond && second >= minimumInterest;
+        const third = hasThird ? Math.round(second * rateForTerm) : 0;
+        const hasFourth = hasThird && third >= minimumInterest;
+        const fourth = hasFourth ? Math.round(third * rateForTerm) : 0;
+        const total = first + second + third + fourth;
+        const effective = total / amount * 365 / days * 100;
+        const effectiveText = `${effective.toLocaleString('vi-VN', { minimumFractionDigits: 4, maximumFractionDigits: 4 })}%`;
+        const gift = cashGift(amount, months, start);
+        const totalWithGift = total + gift;
+        const effectiveWithGift = totalWithGift / amount * 365 / days * 100;
+        byId('total').textContent = number(total);
+        byId('term-display').textContent = termInput.selectedOptions[0].textContent;
+        byId('date-range').textContent = `${formatDate(start)} → ${formatDate(end)}`;
+        byId('principal').textContent = money(amount);
+        byId('days').textContent = `${number(days)} ngày`;
+        byId('interest-one').textContent = money(first);
+        byId('book-two').hidden = !hasSecond;
+        byId('book-two-principal').textContent = money(first);
+        byId('interest-two').textContent = money(second);
+        byId('book-three').hidden = !hasThird;
+        byId('book-three-principal').textContent = money(second);
+        byId('interest-three').textContent = money(third);
+        byId('book-four').hidden = !hasFourth;
+        byId('book-four-principal').textContent = money(third);
+        byId('interest-four').textContent = money(fourth);
+        byId('gate-note').textContent = !hasSecond
+          ? 'Dừng sau Sổ 1: tiền lãi Sổ 1 chưa đủ 10.000.000 đồng để mở Sổ 2.'
+          : !hasThird
+            ? 'Dừng sau Sổ 2: tiền lãi Sổ 2 chưa đủ 10.000.000 đồng để mở Sổ 3.'
+            : !hasFourth
+              ? 'Dừng sau Sổ 3: tiền lãi Sổ 3 chưa đủ 10.000.000 đồng để mở Sổ 4.'
+              : 'Đủ điều kiện tính đến Sổ 4.';
+        byId('effective').textContent = effectiveText;
+        byId('cash-gift').textContent = money(gift);
+        byId('with-gift').textContent = money(totalWithGift);
+        byId('effective-with-gift').textContent = `${effectiveWithGift.toLocaleString('vi-VN', { minimumFractionDigits: 4, maximumFractionDigits: 4 })}%`;
+      }
+      function drawStatement() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1080;
+        canvas.height = 1800;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) throw new Error('Canvas unavailable');
+        ctx.fillStyle = '#f3f6f8';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#112e46';
+        ctx.fillRect(42, 42, 996, 230);
+        ctx.fillStyle = '#c9d9e3';
+        ctx.font = '600 26px Averta, Georgia, serif';
+        ctx.fillText('BẢNG TÍNH LÃI TIỀN GỬI', 82, 100);
+        ctx.fillStyle = '#fff';
+        ctx.font = '700 35px Averta, Georgia, serif';
+        ctx.fillText('Tổng lãi thực nhận', 82, 160);
+        ctx.font = '700 54px Averta, Georgia, serif';
+        ctx.fillText(`${byId('total').textContent} VNĐ`, 82, 233);
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(42, 292, 996, 1440);
+        let y = 310;
+        function section(title) {
+          ctx.fillStyle = '#eaf2f5';
+          ctx.fillRect(62, y, 956, 48);
+          ctx.fillStyle = '#31566c';
+          ctx.font = '700 24px Averta, Georgia, serif';
+          ctx.fillText(title, 82, y + 33);
+          y += 48;
+        }
+        function row(label, value, kind = '') {
+          const height = 64;
+          if (kind === 'gift') {
+            ctx.fillStyle = '#fff9d6';
+            ctx.fillRect(62, y, 956, height);
+          }
+          ctx.strokeStyle = '#e2e9ee';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(62, y + height);
+          ctx.lineTo(1018, y + height);
+          ctx.stroke();
+          const fontSize = label.length > 28 ? 25 : 28;
+          ctx.fillStyle = '#405d70';
+          ctx.font = `${kind === 'strong' ? 700 : 400} ${fontSize}px Averta, Georgia, serif`;
+          ctx.textAlign = 'left';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(label, 82, y + height / 2, 520);
+          ctx.fillStyle = kind === 'strong' ? '#0e6d83' : '#173148';
+          ctx.font = `${kind === 'strong' ? 700 : 600} 28px Averta, Georgia, serif`;
+          ctx.textAlign = 'right';
+          ctx.fillText(value, 998, y + height / 2, 385);
+          ctx.textAlign = 'left';
+          ctx.textBaseline = 'alphabetic';
+          y += height;
+        }
+        section('THÔNG TIN KHOẢN GỬI');
+        row('Kỳ hạn gửi', termInput.selectedOptions[0].textContent);
+        row('Tiền gửi', byId('principal').textContent);
+        row('Ngày gửi → tất toán', byId('date-range').textContent);
+        row('Số ngày · lãi suất', `${byId('days').textContent} · 8,80%`);
+        section('DÒNG TIỀN LÃI');
+        row('Sổ 1 · Tiền gửi', byId('principal').textContent);
+        row('Sổ 1 · Lãi đầu kỳ', byId('interest-one').textContent, 'strong');
+        if (!byId('book-two').hidden) {
+          row('Sổ 2 · Lãi đầu kỳ', byId('interest-two').textContent, 'strong');
+        }
+        if (!byId('book-three').hidden) {
+          row('Sổ 3 · Lãi cuối kỳ', byId('interest-three').textContent, 'strong');
+        }
+        if (!byId('book-four').hidden) {
+          row('Sổ 4 · Lãi cuối kỳ', byId('interest-four').textContent, 'strong');
+        }
+        section('KẾT QUẢ CHÍNH');
+        row('Tổng lãi thực nhận', `${byId('total').textContent} đ`, 'strong');
+        row('Lãi suất thực nhận', byId('effective').textContent, 'strong');
+        row('Quà tặng dự kiến', byId('cash-gift').textContent, 'gift');
+        row('Tổng tiền lãi + quà', byId('with-gift').textContent, 'strong');
+        row('Lãi suất thực nhận + quà', byId('effective-with-gift').textContent, 'strong');
+        ctx.fillStyle = '#5e7383';
+        ctx.font = '400 17px Averta, Georgia, serif';
+        y += 34;
+        ctx.fillText('Chỉ mở sổ tiếp theo khi tiền lãi sổ liền trước đạt từ 10.000.000 đồng; mỗi vòng được làm tròn đến đồng.', 62, y);
+        ctx.fillText('Quà tặng áp dụng từ 01/10/2026 đến hết 31/10/2026, có thể kết thúc sớm.', 62, y + 30);
+        ctx.fillText('Áp dụng cho tiền gửi tiết kiệm, tiền gửi có kỳ hạn tại quầy.', 62, y + 60);
+        return canvas;
+      }
+      captureButton.addEventListener('click', async () => {
+        calculate();
+        if (captureButton.disabled) return;
+        captureButton.disabled = true;
+        captureStatus.textContent = 'Đang tạo ảnh...';
+        try {
+          if (document.fonts) await document.fonts.ready;
+          const canvas = drawStatement();
+          const blob = await new Promise((resolve, reject) => canvas.toBlob(value => value ? resolve(value) : reject(new Error('PNG unavailable')), 'image/png'));
+          clearCapture();
+          const date = hanoiToday();
+          const name = `bang-tinh-lai-${date.year}${String(date.month).padStart(2, '0')}${String(date.day).padStart(2, '0')}-${termInput.value}thang.png`;
+          captureUrl = URL.createObjectURL(blob);
+          captureBlob = blob;
+          captureFile = typeof File === 'function' ? new File([blob], name, { type: 'image/png' }) : null;
+          captureSignature = `${parseAmount(amountInput.value)}|${termInput.value}|${formatDate(date)}`;
+          byId('capture-preview').src = captureUrl;
+          captureReady.hidden = false;
+          shareButton.hidden = false;
+          captureStatus.textContent = 'Ảnh đã sẵn sàng. Nhấn Chia sẻ ảnh để gửi khách hàng.';
+        } catch {
+          captureStatus.textContent = 'Không tạo được ảnh. Vui lòng thử lại.';
+        } finally {
+          captureButton.disabled = false;
+        }
+      });
+      shareButton.addEventListener('click', async () => {
+        if (!captureBlob) return;
+        try {
+          let canShareFile = false;
+          try { canShareFile = Boolean(captureFile && navigator.share && navigator.canShare && navigator.canShare({ files: [captureFile] })); } catch {}
+          if (canShareFile) {
+            await navigator.share({ files: [captureFile], title: 'Bảng tính lãi tiền gửi' });
+          } else if (navigator.clipboard?.write && typeof ClipboardItem === 'function') {
+            await navigator.clipboard.write([new ClipboardItem({ 'image/png': captureBlob })]);
+            captureStatus.textContent = 'Đã sao chép ảnh. Hãy dán vào ứng dụng nhắn tin để gửi khách hàng.';
+          } else {
+            captureStatus.textContent = 'Trình duyệt này chưa hỗ trợ chia sẻ ảnh. Hãy nhấn giữ ảnh xem trước để lưu.';
+          }
+        } catch (error) {
+          if (error.name !== 'AbortError') captureStatus.textContent = 'Không chia sẻ được ảnh. Hãy thử lại hoặc nhấn giữ ảnh xem trước để lưu.';
+        }
+      });
+      amountInput.addEventListener('input', () => {
+        const digits = amountInput.value.replace(/\D/g, '').slice(0, 15);
+        amountInput.value = digits ? number(Number(digits)) : '';
+        calculate();
+      });
+      termInput.addEventListener('change', calculate);
+      document.addEventListener('visibilitychange', () => { if (!document.hidden) calculate(); });
+      window.addEventListener('focus', calculate);
+      window.setInterval(calculate, 60000);
+      calculate();
+    })();
+  </script>
+</body>
+</html>
